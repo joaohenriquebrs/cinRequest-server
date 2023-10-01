@@ -1,39 +1,21 @@
-# Sistema de requisilção
+<h1>Projeto de um Sistema de Requisições</h1>
 
-## Teste pratico 
+    <h2>Padrões de Commits</h2>
 
-1. clone o repositorio usando:
-```bash 
-git clone 
-```
-2. Instale as dependencias usando:
-```bash 
-yarn install
-```
-3. Na raiz do projeto crie o arquivo **.env**, no modelo abaixo:
-```dotenv
+    <p>No projeto, utilizamos os seguintes padrões de commits:</p>
 
-```
-  
-4. Paro rodar o back end execute:
-```bash
-docker-compose up
-```
-caso queira tentar sem o docker, execute:
-```bash
-yarn dev
-```
+    <h3>Prefixos:</h3>
+    <ul>
+        <li><strong>FIX:</strong> Utilizado para resolução de bugs.</li>
+        <li><strong>FEAT:</strong> Usado quando iniciamos a implementação de uma nova feature.</li>
+        <li><strong>CHORE:</strong> Indica trabalho em progresso em uma feature.</li>
+        <li><strong>TEST:</strong> Utilizado ao implementar testes.</li>
+    </ul>
 
-5. Para rodar as migrations, execute:
-```bash
-yarn migration
-```
-é possivel que seja necessario executar antes
-```bash
-yarn generate
-```
-
-6. Verifique se você tem **docker/docker-compose**, para executar os teste com jest, executando
-```bash
-yarn test
-```
+    <h3>Estrutura de Commits:</h3>
+    <ul>
+        <li><strong>PREFIXO[feature/branch-name]:</strong> Descrição do que foi adicionado nesta feature.</li>
+        <li><strong>PREFIXO[hotfix/branch-name]:</strong> Descrição do que foi ajustado neste hotfix.</li>
+        <li><strong>PREFIXO[bugfix/branch-name]:</strong> Descrição do que foi corrigido neste bugfix.</li>
+        <li><strong>PREFIXO[release/version]:</strong> Descrição do que foi lançado nesta versão.</li>
+    </ul>

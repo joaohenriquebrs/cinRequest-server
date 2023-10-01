@@ -1,5 +1,6 @@
 import { studentResponse } from '../responses';
 
+// Define os caminhos da API para operações relacionadas aos estudantes
 const studentPath = {
   '/student': {
     post: {
@@ -13,15 +14,14 @@ const studentPath = {
               $ref: '#/components/schemas/student',
             },
             example: {
-              name: 'Ednaldo Pereira',
+              name: 'Daniel Brandão',
               registration: '123456789',
-              email: 'ednaldopereira@gmail.com',
-              password: 'senha',
+              email: 'danielbrandao@gmail.com',
+              password: 'senha123',
             },
           },
         },
       },
-
       responses: studentResponse.create,
     },
   },
@@ -66,10 +66,10 @@ const studentPath = {
               $ref: '#/components/schemas/student',
             },
             example: {
-              name: 'Ednaldo Pereira',
+              name: 'Daniel Brandão',
               registration: '123456789',
-              email: 'ednaldo Pereira',
-              password: 'senha',
+              email: 'Daniel Brandão',
+              password: 'senha123',
             },
           },
         },

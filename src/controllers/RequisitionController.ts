@@ -6,18 +6,23 @@ class RequisitionController {
     try {
       const { sector, requisitionType, description, authorEmail } = req.body;
 
+      // Criar uma instância do repositório de estudantes
       const studentRepository = new StudentRepository();
 
-      const checkstudent = await studentRepository.findByEmail(authorEmail);
+      // Verificar se o estudante existe com base no e-mail
+      const checkStudent = await studentRepository.findByEmail(authorEmail);
 
-      if (!checkstudent) {
+      if (!checkStudent) {
         return next({
           status: 400,
           message: 'O estudante não existe!',
         });
       }
 
+      // Criar uma instância do repositório de requisições
       const requisitionRepository = new RequisitionRepository();
+
+      // Criar a requisição
       const requisition = await requisitionRepository.create({
         sector,
         requisitionType,
@@ -39,33 +44,37 @@ class RequisitionController {
     }
   }
 
-  async readAllbyStudent(req: Request, res: Response, next: NextFunction) {
+  async readAllByStudent(req: Request, res: Response, next: NextFunction) {
     try {
       const { studentId } = req.params;
 
-      //   veirificar se o aluno existe
+      // Verificar se o aluno existe com base no ID
       const studentRepository = new StudentRepository();
       const student = await studentRepository.findById(studentId);
+
       if (!student) {
         return next({
           status: 404,
-          message: 'Student not found',
+          message: 'Estudante não encontrado',
         });
       }
 
+      // Criar uma instância do repositório de requisições
       const requisitionRepository = new RequisitionRepository();
+
+      // Encontrar todas as requisições do aluno com base no email do estudante
       const requisitions = await requisitionRepository.findAllByEmail(student.email);
 
       if (!requisitions) {
         return next({
           status: 404,
-          message: 'Requisitions not found',
+          message: 'Requisições não encontradas',
         });
       }
 
       res.locals = {
         status: 200,
-        message: 'Requisitions found',
+        message: 'Requisições encontradas',
         data: requisitions,
       };
 
@@ -77,22 +86,24 @@ class RequisitionController {
 
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
-      const { requisitiontId } = req.params;
+      const { requisitionId } = req.params;
 
+      // Criar uma instância do repositório de requisições
       const requisitionRepository = new RequisitionRepository();
 
-      const requisition = await requisitionRepository.delete(requisitiontId);
+      // Excluir a requisição com base no ID
+      const requisition = await requisitionRepository.delete(requisitionId);
 
       if (!requisition) {
         return next({
           status: 404,
-          message: 'Requisition not found',
+          message: 'Requisição não encontrada',
         });
       }
 
       res.locals = {
         status: 200,
-        message: 'Requition deleted',
+        message: 'Requisição excluída',
       };
 
       return next();
@@ -103,8 +114,10 @@ class RequisitionController {
 
   async readAll(req: Request, res: Response, next: NextFunction) {
     try {
+      // Criar uma instância do repositório de requisições
       const requisitionRepository = new RequisitionRepository();
 
+      // Encontrar todas as requisições
       const requisitions = await requisitionRepository.findAll();
 
       res.locals = {
@@ -118,14 +131,17 @@ class RequisitionController {
     }
   }
 
-  async AvaliationRequisition(req: Request, res: Response, next: NextFunction) {
+  async evaluateRequisition(req: Request, res: Response, next: NextFunction) {
     try {
       const { requisitionId, status } = req.params;
 
+      // Determinar a resposta com base no status (Aprovar ou Rejeitar)
       const response = status === 'Aprovar' ? 'Aprovado' : 'Rejeitado';
 
+      // Criar uma instância do repositório de requisições
       const requisitionRepository = new RequisitionRepository();
 
+      // Atualizar o status da requisição para 'Fechado' e definir a resposta
       const requisition = await requisitionRepository.update(requisitionId, {
         status: 'Fechado',
         response,
@@ -134,13 +150,13 @@ class RequisitionController {
       if (!requisition) {
         return next({
           status: 404,
-          message: 'Requisition not found',
+          message: 'Requisição não encontrada',
         });
       }
 
       res.locals = {
         status: 200,
-        message: 'Requisition avaliada',
+        message: 'Requisição avaliada',
         data: requisition,
       };
 

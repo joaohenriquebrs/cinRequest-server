@@ -7,26 +7,28 @@ class StudentController {
     try {
       const studentData = req.body;
 
+      // Criar uma instância do repositório de estudantes
       const studentRepository = new StudentRepository();
 
+      // Validar e parsear os dados do estudante usando o DTO Student
       const validatedData = Student.parse(studentData);
 
-      const checkEmail = await studentRepository.findByEmail(
-        validatedData.email,
-      );
+      // Verificar se o email já está registrado
+      const checkEmail = await studentRepository.findByEmail(validatedData.email);
 
       if (checkEmail) {
         return next({
           status: 400,
-          message: 'This email is already registred',
+          message: 'Este email já está registrado',
         });
       }
 
+      // Criar o estudante
       const student = await studentRepository.create(validatedData);
 
       res.locals = {
         status: 201,
-        message: 'Student created',
+        message: 'Estudante criado',
         data: student,
       };
 
@@ -40,20 +42,22 @@ class StudentController {
     try {
       const { studentId } = req.params;
 
+      // Criar uma instância do repositório de estudantes
       const studentRepository = new StudentRepository();
 
+      // Encontrar o estudante por ID
       const student = await studentRepository.findById(studentId);
 
       if (!student) {
         return next({
           status: 404,
-          message: 'Student not found',
+          message: 'Estudante não encontrado',
         });
       }
 
       res.locals = {
         status: 200,
-        data: Student,
+        data: student,
       };
 
       return next();
@@ -67,14 +71,16 @@ class StudentController {
       const { studentId } = req.params;
       const newStudent = req.body;
 
+      // Criar uma instância do repositório de estudantes
       const studentRepository = new StudentRepository();
 
+      // Atualizar o estudante com base no ID
       const student = await studentRepository.update(studentId, newStudent);
 
       if (!student) {
         return next({
           status: 404,
-          message: 'Student not found',
+          message: 'Estudante não encontrado',
         });
       }
 
@@ -93,20 +99,22 @@ class StudentController {
     try {
       const { studentId } = req.params;
 
+      // Criar uma instância do repositório de estudantes
       const studentRepository = new StudentRepository();
 
+      // Excluir o estudante com base no ID
       const student = await studentRepository.delete(studentId);
 
       if (!student) {
         return next({
           status: 404,
-          message: 'Student not found',
+          message: 'Estudante não encontrado',
         });
       }
 
       res.locals = {
         status: 200,
-        message: 'Student deleted',
+        message: 'Estudante excluído',
       };
 
       return next();
@@ -117,8 +125,10 @@ class StudentController {
 
   async readAll(req: Request, res: Response, next: NextFunction) {
     try {
+      // Criar uma instância do repositório de estudantes
       const studentRepository = new StudentRepository();
 
+      // Encontrar todos os estudantes
       const students = await studentRepository.findAll();
 
       res.locals = {

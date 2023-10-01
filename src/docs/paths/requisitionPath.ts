@@ -1,5 +1,6 @@
 import { requisitionResponse } from '../responses';
 
+// Define os caminhos da API para as operações relacionadas a requisições
 const requisitionPath = {
   '/requisition': {
     post: {
