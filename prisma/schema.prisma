@@ -1,0 +1,31 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Student {
+  id           String @id @default(uuid())
+  registration String @default(cuid())
+  name         String
+  email        String @unique
+  password     String
+
+  Requisition Requisition[]
+}
+
+model Requisition {
+  id              String   @id @default(uuid())
+  sector          String
+  requisitionType String
+  createdAt       DateTime @default(now())
+  description     String
+
+  status      String @default("Aberto")
+  response    String @default("Aguardando resposta")
+  authorEmail String
+  author      Student @relation(fields: [authorEmail], references: [email])
+}
