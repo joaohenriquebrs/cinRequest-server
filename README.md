@@ -45,3 +45,5 @@
 <li>Verifique se você possui <strong>docker/docker-compose</strong> instalados e execute os testes com o Jest usando:</li>
     <pre><code>yarn test</code></pre>
 </ol>
+
+<h4>Node version: v19.8.1</h4>
