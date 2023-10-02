@@ -10,6 +10,7 @@ generator client {
 enum RoleEnum {
   USER
   ADMIN
+  EMPLOYEE
 }
 
 enum StatusEnum {

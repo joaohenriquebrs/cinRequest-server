@@ -1,14 +1,16 @@
 import { Router } from 'express';
+import userRouter from './userRoutes';
+import requestRouter from './requestRoutes';
 
-import studentRouter from './StudentRoutes';
-import requisitionRouter from './RequisitionRoutes';
+
 
 const router = Router();
 
-router.use('/student', studentRouter);
-router.use('/requisition', requisitionRouter);
-router.route('/').get((req, res) => {
-  res.send('Made with 💚 and &lt; &#x0002F; &gt; by CITi');
+router.use('/user', userRouter);
+router.use('/request', requestRouter);
+
+router.route('/health').get((req, res) => {
+  res.send('Made with 💚 and &lt; &#x0002F; &gt; by eu');
 });
 
 export default router;

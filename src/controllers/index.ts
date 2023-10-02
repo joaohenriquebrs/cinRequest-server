@@ -1,4 +1,4 @@
-import StudentController from './StudentController';
+import StudentController from './UserController';
 import RequisitionController from './RequisitionController';
 
 export {
