@@ -7,26 +7,108 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Requisition {
-  id              String   @id @default(uuid())
-  sector          String
-  requisitionType String
-  createdAt       DateTime @default(now())
-  description     String
-
-  status      String @default("Aberto")
-  response    String @default("Aguardando resposta")
-  authorEmail String
-  author      Student @relation(fields: [authorEmail], references: [email])
+enum RoleEnum {
+  USER
+  ADMIN
 }
 
+enum StatusEnum {
+  ACTIVE
+  INACTIVE
+}
 
-model Student {
-  id           String @id @default(uuid())
-  registration String @default(cuid())
-  name         String
-  email        String @unique
-  password     String
+enum RequestTypesEnum {
+  ATIVIDADE_COMPLEMENTAR
+  DISPENSA_DISCIPLINA
+  RESERVA_SALA
+  EMISSAO_CRACHA
+  AJUSTE_COTAS
+  PROBLEMAS_TECNICOS
+}
 
-  Requisition Requisition[]
+model User {
+  id           Int          @id @default(autoincrement())
+  name         String       @db.VarChar(255)
+  refreshToken String       @db.VarChar(100)
+  cpf          String       @unique @db.VarChar(11)
+  email        String       @unique @db.VarChar(255)
+  password     String       @db.VarChar(255)
+  phone        String       @db.VarChar(20)
+  role         RoleEnum
+  status       StatusEnum
+  UserSector   UserSector[]
+  Demand       Demand[]
+  createdDate  DateTime     @default(now())
+  updatedAt    DateTime?    @updatedAt
+
+  @@map("TB_USER")
+}
+
+model UserSector {
+  id       Int    @id @default(autoincrement())
+  userId   Int    @db.Integer
+  User     User   @relation(fields: [userId], references: [id])
+  sectorId Int    @db.Integer
+  Sector   Sector @relation(fields: [sectorId], references: [id])
+
+  @@map("TB_USER_SECTOR")
+}
+
+model Sector {
+  id          Int          @id @default(autoincrement())
+  name        String       @db.VarChar(255)
+  status      StatusEnum
+  Demand      Demand[]
+  UserSector  UserSector[]
+  createdDate DateTime     @default(now())
+  updatedAt   DateTime?    @updatedAt
+
+  @@map("TB_SECTOR")
+}
+
+model Demand {
+  id                  Int                   @id @default(autoincrement())
+  requestedType       RequestTypesEnum
+  status              StatusEnum
+  text                String                @db.Text
+  Sector              Sector?               @relation(fields: [sectorId], references: [id])
+  sectorId            Int?
+  User                User?                 @relation(fields: [userId], references: [id])
+  userId              Int?
+  DemandStatusRequest DemandStatusRequest[]
+  updatedAt           DateTime?             @updatedAt
+  createdDate         DateTime              @default(now())
+
+  @@map("TB_DEMAND")
+}
+
+model DemandStatusRequest {
+  id          Int      @id @default(autoincrement())
+  information String   @db.Text
+  mediaId     Int?     @db.Integer
+  Media       Media?   @relation(fields: [mediaId], references: [id])
+  Demand      Demand?  @relation(fields: [demandId], references: [id])
+  demandId    Int?
+  createdDate DateTime @default(now())
+
+  @@map("TB_DEMAND_STATUS_REQUEST")
+}
+
+model Media {
+  id                  Int                   @id @default(autoincrement())
+  url                 String                @db.VarChar(500)
+  createdDate         DateTime              @default(now())
+  DemandStatusRequest DemandStatusRequest[]
+
+  @@map("TB_MEDIA")
+}
+
+model Configuration {
+  id          Int       @id @default(autoincrement())
+  key         String    @db.VarChar(255)
+  value       String    @db.VarChar(255)
+  createdDate DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+
+  @@map("TB_CONFIGURATION")
 }

@@ -47,3 +47,7 @@
 </ol>
 
 <h4>Node version: v19.8.1</h4>
+
+</br>
+<h3>Mer and Der:</h3>
+![Alt text](MerAndDer.png)
